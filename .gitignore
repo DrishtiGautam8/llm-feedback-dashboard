@@ -2,3 +2,5 @@
 *.json
 __pycache__/
 config.env
+sheet_handler.py
+hide_test_eval.py
