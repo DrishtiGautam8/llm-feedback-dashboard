@@ -7,8 +7,8 @@ from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 import os
 
-SERVICE_ACCOUNT = os.getenv("SERVICE_ACCOUNT")
-
+#SERVICE_ACCOUNT = os.getenv("SERVICE_ACCOUNT")
+SERVICE_ACCOUNT = st.secrets["SERVICE_ACCOUNT"]
 def get_gspread_client():
     try:
         scopes = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -22,8 +22,10 @@ def get_gspread_client():
 gc = get_gspread_client()
 
 # Load Sheets
-QUERY_SHEET_ID = os.getenv("QUERY_SHEET_ID")
-FEEDBACK_SHEET_ID = os.getenv("FEEDBACK_SHEET_ID")
+QUERY_SHEET_ID = st.secrets["SPREADSHEET_IDS"]["QUERY_SHEET_ID"]
+FEEDBACK_SHEET_ID = st.secrets["SPREADSHEET_IDS"]["FEEDBACK_SHEET_ID"]
+# QUERY_SHEET_ID = os.getenv("QUERY_SHEET_ID")
+# FEEDBACK_SHEET_ID = os.getenv("FEEDBACK_SHEET_ID")
 
 query_sheet = gc.open_by_key(QUERY_SHEET_ID).worksheet("Sheet1")
 feedback_sheet = gc.open_by_key(FEEDBACK_SHEET_ID).worksheet("Sheet1")
