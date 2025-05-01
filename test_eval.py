@@ -6,6 +6,8 @@ import gspread
 from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 import os
+import time
+
 
 #SERVICE_ACCOUNT = os.getenv("SERVICE_ACCOUNT")
 SERVICE_ACCOUNT = st.secrets["SERVICE_ACCOUNT"]
@@ -199,12 +201,20 @@ if st.button("✅ Submit Feedback"):
 
             headers = feedback_sheet.row_values(1)
             for entry in feedback_data:
-                data_dict = dict(zip(headers, entry))
                 row_num = find_first_empty_row(feedback_sheet)
-    
-                for col_idx, header in enumerate(headers, start=1):
-                    value = data_dict.get(header, "")
-                    feedback_sheet.update_cell(row_num, col_idx, value)
+
+                for attempt in range(3):  # Retry up to 3 times
+                    try:
+                        feedback_sheet.insert_row(entry, index=row_num)
+                        break
+                    except Exception as e:
+                        if "Quota exceeded" in str(e) or "Rate Limit Exceeded" in str(e):
+                            wait_time = 2 ** attempt
+                            st.warning(f"⚠️ Quota hit. Retrying in {wait_time} seconds...")
+                            time.sleep(wait_time)
+                        else:
+                            raise e
+
 
             st.success("✅ Feedback submitted successfully!")
             st.session_state.submissions = []
