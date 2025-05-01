@@ -96,7 +96,8 @@ else:
     st.markdown("### 📝 Instructions")
     st.write("""
         Rate each model's response based on the rubrics below.
-        Then, select the best model for the query.
+        Then, select the best model for the query. 
+        
     """)
 
     for q_no in st.session_state.loaded_queries:
