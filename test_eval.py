@@ -96,7 +96,7 @@ else:
     st.markdown("### 📝 Instructions")
     st.write("""
         Rate each model's response based on the rubrics below.
-        Then, select the best model for the query. 
+        Then, select the best model for the query. For any issue, email me at drishtig2023version@gmail.com.
         
     """)
 
