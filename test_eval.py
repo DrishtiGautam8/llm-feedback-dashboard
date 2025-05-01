@@ -9,14 +9,25 @@ import os
 
 #SERVICE_ACCOUNT = os.getenv("SERVICE_ACCOUNT")
 SERVICE_ACCOUNT = st.secrets["SERVICE_ACCOUNT"]
+
+
 def get_gspread_client():
     try:
         scopes = ["https://www.googleapis.com/auth/spreadsheets"]
-        credentials = Credentials.from_service_account_file(SERVICE_ACCOUNT, scopes=scopes)
+        credentials = Credentials.from_service_account_info(st.secrets["SERVICE_ACCOUNT"], scopes=scopes)
         gc = gspread.authorize(credentials)
         return gc
     except Exception as e:
-        raise RuntimeError(f"❌ Failed to connect with {SERVICE_ACCOUNT}: {e}")
+        raise RuntimeError(f"❌ Failed to connect with Google Sheets: {e}")
+
+# def get_gspread_client():
+#     try:
+#         scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+#         credentials = Credentials.from_service_account_file(SERVICE_ACCOUNT, scopes=scopes)
+#         gc = gspread.authorize(credentials)
+#         return gc
+#     except Exception as e:
+#         raise RuntimeError(f"❌ Failed to connect with {SERVICE_ACCOUNT}: {e}")
 
 # Initialize client
 gc = get_gspread_client()
